@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(foreach \\($c in @\\('git','npm','node','python','python3'\\)\\) { $cmd = Get-Command $c -ErrorAction SilentlyContinue; if \\($cmd\\) { \"$c -> $\\($cmd.Source\\)\" } else { \"$c -> NOT FOUND\" } })",
+      "PowerShell($tmp = \"$env:TEMP\\\\claude\\\\uipro-clone\"; if \\(Test-Path $tmp\\) { Remove-Item -Recurse -Force $tmp }; git clone --depth 1 https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git $tmp; if \\($?\\) { \"CLONED OK\"; Get-ChildItem \"$tmp\\\\.claude\\\\skills\" | Select-Object Name })",
+      "PowerShell($s = \"$env:TEMP\\\\claude\\\\uipro-clone\\\\.claude\\\\skills\\\\ui-ux-pro-max\"; Get-ChildItem $s | Select-Object Mode,Name; \"--- has SKILL.md:\"; Test-Path \"$s\\\\SKILL.md\"; \"--- scripts:\"; if \\(Test-Path \"$s\\\\scripts\"\\) { Get-ChildItem \"$s\\\\scripts\" -Recurse -File | Select-Object -First 20 FullName } else { \"no scripts dir\" }; \"--- size MB:\"; [math]::Round\\(\\(Get-ChildItem $s -Recurse -File | Measure-Object Length -Sum\\).Sum/1MB,2\\))",
+      "PowerShell($s = \"$env:TEMP\\\\claude\\\\uipro-clone\\\\.claude\\\\skills\\\\ui-ux-pro-max\"; \"=== scripts ===\"; Get-ChildItem \"$s\\\\scripts\" -Recurse | Select-Object Name; \"=== data \\(top\\) ===\"; Get-ChildItem \"$s\\\\data\" | Select-Object Mode,Name; \"=== all skills sizes ===\"; Get-ChildItem \"$env:TEMP\\\\claude\\\\uipro-clone\\\\.claude\\\\skills\" -Directory | ForEach-Object { $sz=[math]::Round\\(\\(Get-ChildItem $_.FullName -Recurse -File | Measure-Object Length -Sum\\).Sum/1MB,2\\); \"$\\($_.Name\\): $sz MB\" })",
+      "PowerShell($skills = \"$env:TEMP\\\\claude\\\\uipro-clone\\\\.claude\\\\skills\"; Get-ChildItem $skills -Directory | ForEach-Object { $f=\"$\\($_.FullName\\)\\\\SKILL.md\"; if \\(Test-Path $f\\) { $fm = \\(Get-Content $f -TotalCount 6\\) -join \" | \"; \"[$\\($_.Name\\)] $fm\" } else { \"[$\\($_.Name\\)] NO SKILL.md\" } }; \"=== destination ===\"; $dest=\"$env:USERPROFILE\\\\.claude\\\\skills\"; \"dest: $dest\"; \"exists: $\\(Test-Path $dest\\)\"; if \\(Test-Path $dest\\) { Get-ChildItem $dest -Directory | Select-Object Name })",
+      "PowerShell($src = \"$env:TEMP\\\\claude\\\\uipro-clone\\\\.claude\\\\skills\"; $dest = \"$env:USERPROFILE\\\\.claude\\\\skills\"; New-Item -ItemType Directory -Force -Path $dest | Out-Null; Get-ChildItem $src -Directory | ForEach-Object { Copy-Item $_.FullName -Destination \"$dest\\\\$\\($_.Name\\)\" -Recurse -Force }; \"=== installed ===\"; Get-ChildItem $dest -Directory | ForEach-Object { \"$\\($_.Name\\) - SKILL.md: $\\(Test-Path \"$\\($_.FullName\\)\\\\SKILL.md\"\\)\" })",
+      "PowerShell($skill = \"$env:USERPROFILE\\\\.claude\\\\skills\\\\ui-ux-pro-max\"; python \"$skill\\\\scripts\\\\search.py\" \"dashboard\" 2>&1 | Select-Object -First 15)",
+      "PowerShell($found=$false; foreach \\($c in @\\('py','python3'\\)\\) { $cmd=Get-Command $c -ErrorAction SilentlyContinue; if\\($cmd\\){ try { $v = & $c --version 2>&1; if\\($LASTEXITCODE -eq 0\\){ \"$c OK -> $v \\($\\($cmd.Source\\)\\)\"; $found=$true } else { \"$c -> stub/alias\" } } catch { \"$c -> error\" } } else { \"$c -> not found\" } }; \"py launcher list:\"; try { py -0p 2>&1 } catch { \"no py launcher\" })",
+      "PowerShell(Remove-Item -Recurse -Force \"$env:TEMP\\\\claude\\\\uipro-clone\" -ErrorAction SilentlyContinue; \"cleanup done\")",
+      "PowerShell($p = Join-Path \\([System.IO.Path]::GetFullPath\\($env:TEMP\\)\\) \"claude\\\\uipro-clone\"; if \\(Test-Path $p\\) { [System.IO.Directory]::Delete\\($p, $true\\); \"removed\" } else { \"already gone: $p\" })",
+      "PowerShell($p = Join-Path \\([System.IO.Path]::GetFullPath\\($env:TEMP\\)\\) \"claude\\\\uipro-clone\"; if \\(Test-Path $p\\) { Get-ChildItem $p -Recurse -Force | ForEach-Object { $_.Attributes = 'Normal' }; Remove-Item -Recurse -Force $p; \"removed\" } else { \"gone\" }; \"exists now: $\\(Test-Path $p\\)\")",
+      "WebFetch(domain:www.osteopathe-maillane.fr)",
+      "WebFetch(domain:www.doctolib.fr)",
+      "WebSearch",
+      "Read(//c/Users/k.selmi/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"osteopath wellness therapist premium natural sage\" --design-system -p \"Manon Fajjari Osteopathe\")",
+      "Bash(mkdir -p assets/img assets/css assets/js)",
+      "Bash(cp \"t6jnkqiq5hbtzvlrrpgk.webp\" \"assets/img/manon-fajjari-osteopathe-diplome.webp\")",
+      "Bash(cp \"egjtsg7lsctmdrhl3p9n.webp\" \"assets/img/manon-fajjari-osteopathe-portrait.webp\")",
+      "Bash(cp \"kbkeyfs5u44tktvhkslk.webp\" \"assets/img/cabinet-osteopathie-trie-chateau.webp\")",
+      "Bash(cp \"zoqsccsxjemolqu1yiia.webp\" \"assets/img/salle-attente-cabinet-osteopathie.webp\")",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(Write-Output \"--- node ---\"; \\(Get-Command node -ErrorAction SilentlyContinue\\).Source; node --version 2>$null; Write-Output \"--- npm ---\"; \\(Get-Command npm -ErrorAction SilentlyContinue\\).Source; Write-Output \"--- gh ---\"; \\(Get-Command gh -ErrorAction SilentlyContinue\\).Source; Write-Output \"--- vercel ---\"; \\(Get-Command vercel -ErrorAction SilentlyContinue\\).Source; Write-Output \"--- git user ---\"; git config --global user.name; git config --global user.email)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(git -c commit.gpgsign=false commit -m 'Site vitrine Manon Fajjari — ostéopathe D.O. \\(multipage, SEO, Doctolib\\) *)"
+    ]
+  }
+}

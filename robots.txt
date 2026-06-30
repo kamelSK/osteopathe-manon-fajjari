@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.osteopathe-fajjari.fr/sitemap.xml

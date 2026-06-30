@@ -1,0 +1,17 @@
+# Système
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Éditeurs
+.vscode/
+.idea/
+
+# Vercel
+.vercel/
+
+# Dépendances éventuelles
+node_modules/
+
+# Aperçu local Claude
+.claude/launch.json
