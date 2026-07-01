@@ -444,3 +444,125 @@ strong { color: var(--sage-800); font-weight: 600; }
 .bg-surface { background: var(--surface-2); }
 .divider-leaf { display:flex; align-items:center; justify-content:center; gap:1rem; color:var(--sage-300); margin: 0 auto; }
 .divider-leaf svg{width:26px;height:26px;} .divider-leaf::before,.divider-leaf::after{content:"";height:1px;width:60px;background:var(--sage-200);}
+
+/* =========================================================================
+   Barre d'avis Google (haut de page) + décalage de l'en-tête
+   ========================================================================= */
+:root { --topbar-h: 40px; }
+
+.gmb-topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h); z-index: 101;
+  display: flex; align-items: center; justify-content: center; gap: .6rem;
+  padding-inline: 1rem;
+  background: linear-gradient(90deg, var(--sage-800), var(--sage-700));
+  color: #fff; font-size: .82rem;
+  transition: transform .35s var(--ease);
+}
+.gmb-topbar.hidden { transform: translateY(-100%); }
+.gmb-topbar a { display: inline-flex; align-items: center; gap: .6rem; color: #fff; font-weight: 500; }
+.gmb-topbar .g-logo { width: 18px; height: 18px; background: #fff; border-radius: 50%; padding: 2px; flex-shrink: 0; }
+.gmb-topbar .stars { display: inline-flex; gap: 1px; color: #fbbc05; }
+.gmb-topbar .stars svg { width: 14px; height: 14px; }
+.gmb-topbar .tb-cta { text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+@media (max-width: 600px){ .gmb-topbar .tb-text { display: none; } .gmb-topbar { font-size: .78rem; } }
+
+/* L'en-tête descend sous la barre Google, puis remonte au défilement */
+.site-header { top: var(--topbar-h); transition: background .35s var(--ease), box-shadow .35s var(--ease), height .35s var(--ease), top .35s var(--ease); }
+.site-header.scrolled { top: 0; }
+
+/* On réserve la hauteur de la barre dans les héros */
+.hero { padding-top: calc(var(--topbar-h) + var(--header-h) + clamp(2rem, 6vw, 4.5rem)); }
+.page-hero { padding-top: calc(var(--topbar-h) + var(--header-h) + clamp(2.5rem, 6vw, 4rem)); }
+
+/* =========================================================================
+   Bloc d'avis Google (bas de page)
+   ========================================================================= */
+.gmb-footerbar { background: var(--surface-2); border-top: 1px solid var(--line); }
+.gmb-footerbar .inner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 1rem 1.6rem; text-align: center; padding-block: 1.8rem;
+}
+.gmb-footerbar .g-logo { width: 36px; height: 36px; flex-shrink: 0; }
+.gmb-footerbar .rev { display: flex; align-items: center; gap: .9rem; text-align: left; }
+.gmb-footerbar .stars { display: inline-flex; gap: 2px; color: #fbbc05; }
+.gmb-footerbar .stars svg { width: 18px; height: 18px; }
+.gmb-footerbar b { font-family: var(--font-serif); color: var(--sage-900); font-size: 1.08rem; display: block; }
+.gmb-footerbar .rev span { color: var(--muted); font-size: .9rem; }
+
+/* =========================================================================
+   Widget WhatsApp flottant
+   ========================================================================= */
+.wa-fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 130;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #25d366; color: #fff; border: 0; cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: 0 12px 30px -6px rgba(37,211,102,.6);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.wa-fab:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 16px 36px -6px rgba(37,211,102,.7); }
+.wa-fab svg { width: 34px; height: 34px; }
+.wa-fab .wa-ping {
+  position: absolute; inset: 0; border-radius: 50%; background: #25d366;
+  opacity: .55; z-index: -1; animation: wa-ping 2.4s var(--ease) infinite;
+}
+@keyframes wa-ping { 0% { transform: scale(1); opacity: .5; } 70%,100% { transform: scale(1.7); opacity: 0; } }
+.wa-fab .wa-dot {
+  position: absolute; top: -2px; right: -2px; width: 20px; height: 20px; border-radius: 50%;
+  background: #ff3b30; color: #fff; font-size: .72rem; font-weight: 700;
+  display: grid; place-items: center; border: 2px solid #fff;
+}
+
+.wa-panel {
+  position: fixed; right: 20px; bottom: 92px; z-index: 130;
+  width: 340px; max-width: calc(100vw - 32px);
+  background: #fff; border-radius: 18px; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(16px) scale(.96); opacity: 0; pointer-events: none;
+  transform-origin: bottom right;
+  transition: transform .3s var(--ease), opacity .3s var(--ease);
+}
+.wa-panel.open { transform: none; opacity: 1; pointer-events: auto; }
+.wa-head { background: #075e54; color: #fff; padding: 1rem 1.1rem; display: flex; align-items: center; gap: .85rem; }
+.wa-head .av {
+  width: 46px; height: 46px; border-radius: 50%; background: #25d366;
+  display: grid; place-items: center; font-family: var(--font-serif); font-size: 1.25rem; flex-shrink: 0;
+  position: relative;
+}
+.wa-head .av::after { content:""; position:absolute; right:1px; bottom:1px; width:11px; height:11px; border-radius:50%; background:#4ade80; border:2px solid #075e54; }
+.wa-head .who b { display: block; font-size: .98rem; line-height: 1.2; }
+.wa-head .who span { font-size: .76rem; opacity: .82; }
+.wa-head .wa-close { margin-left: auto; background: transparent; border: 0; color: #fff; cursor: pointer; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; }
+.wa-head .wa-close:hover { background: rgba(255,255,255,.15); }
+.wa-head .wa-close svg { width: 20px; height: 20px; }
+.wa-body {
+  padding: 1.3rem 1.1rem; min-height: 130px;
+  background-color: #e6ddd4;
+  background-image: radial-gradient(rgba(0,0,0,.035) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.wa-bubble {
+  background: #fff; border-radius: 2px 14px 14px 14px; padding: .8rem 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,.12); font-size: .95rem; color: #303030; max-width: 90%;
+  position: relative; animation: wa-in .4s var(--ease) both;
+}
+.wa-bubble .wa-time { display: block; font-size: .68rem; color: #9aa0a6; text-align: right; margin-top: .35rem; }
+@keyframes wa-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.wa-foot { display: flex; gap: .5rem; padding: .7rem; background: #f0f0f0; align-items: center; }
+.wa-foot input {
+  flex: 1; border: 1px solid var(--line); border-radius: 100px; padding: .65rem 1rem;
+  font-family: inherit; font-size: .9rem; background: #fff; color: var(--ink);
+}
+.wa-foot input:focus-visible { outline: 2px solid #25d366; outline-offset: 1px; }
+.wa-foot .wa-send {
+  width: 44px; height: 44px; border-radius: 50%; background: #25d366; color: #fff; border: 0;
+  display: grid; place-items: center; cursor: pointer; flex-shrink: 0; transition: background .2s;
+}
+.wa-foot .wa-send:hover { background: #1ebe5a; }
+.wa-foot .wa-send svg { width: 20px; height: 20px; }
+
+@media (max-width: 560px){
+  .wa-fab { right: 16px; bottom: 16px; width: 56px; height: 56px; }
+  .wa-panel { right: 16px; bottom: 82px; }
+}
+@media (prefers-reduced-motion: reduce){ .wa-fab .wa-ping { animation: none; } }
