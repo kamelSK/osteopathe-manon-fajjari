@@ -11,8 +11,8 @@
     // Note et nombre d'avis Google. Laisser à null tant qu'ils ne sont pas connus
     // (le badge affichera alors un simple appel à l'action, sans note inventée).
     // Exemple une fois connus : googleRating: '5,0', googleCount: '27'
-    googleRating: null,
-    googleCount: null,
+    googleRating: '5,0',
+    googleCount: '4',
 
     // Vrais avis Google à afficher sur la page d'accueil.
     // ⚠️ NE RIEN INVENTER : copier ici les avis réels depuis la fiche Google.
