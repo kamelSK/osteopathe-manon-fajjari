@@ -133,23 +133,66 @@
 
     // Cartes d'avis
     if (reviews.length) {
-      var single = reviews.length === 1;
-      reviewsWrap.className = single ? 'grid grid-3' : 'g-masonry';
-      reviewsWrap.innerHTML = reviews.map(function (r, i) {
+      var cardHtml = function (r) {
         var initial = (r.name || '?').trim().charAt(0).toUpperCase();
-        var delay = (i % 3) + 1;
-        var style = single ? ' style="grid-column:1/-1;max-width:760px;margin:0 auto;"' : '';
-        return '<figure class="quote g-review reveal"' + style + ' data-delay="' + delay + '">' +
+        var body = r.text
+          ? '<blockquote>' + r.text + '</blockquote>' +
+            (r.text.length > 160 ? '<a class="g-more" href="' + CONFIG.googleUrl + '" target="_blank" rel="noopener">Lire la suite sur Google</a>' : '')
+          : '<p class="g-norating">A attribué la note maximale au cabinet.</p>';
+        return '<figure class="quote g-review">' +
           '<span class="g-mark">' + svgGoogleG + '</span>' +
           '<div class="stars" aria-label="' + (r.rating || 5) + ' étoiles sur 5">' + starsFor(r.rating || 5) + '</div>' +
-          (r.text ? '<blockquote>' + r.text + '</blockquote>' : '<p class="g-norating">A attribué la note maximale au cabinet.</p>') +
+          body +
           '<figcaption class="author">' +
             '<span class="avatar" aria-hidden="true">' + initial + '</span>' +
             '<span class="who"><b>' + (r.name || '') + '</b>' +
               '<span>' + (r.date ? r.date + ' · ' : '') + 'Publié sur Google</span></span>' +
           '</figcaption>' +
         '</figure>';
-      }).join('');
+      };
+
+      if (reviews.length === 1) {
+        reviewsWrap.className = 'grid grid-3';
+        reviewsWrap.innerHTML = '<div style="grid-column:1/-1;max-width:760px;margin:0 auto;">' + cardHtml(reviews[0]) + '</div>';
+      } else {
+        reviewsWrap.className = 'g-carousel';
+        var chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>';
+        var chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+        reviewsWrap.innerHTML =
+          '<button class="g-nav g-prev" type="button" aria-label="Avis précédents">' + chevL + '</button>' +
+          '<div class="g-track">' + reviews.map(cardHtml).join('') + '</div>' +
+          '<button class="g-nav g-next" type="button" aria-label="Avis suivants">' + chevR + '</button>';
+
+        var track = reviewsWrap.querySelector('.g-track');
+        var prevBtn = reviewsWrap.querySelector('.g-prev');
+        var nextBtn = reviewsWrap.querySelector('.g-next');
+        var stepSize = function () {
+          var c = track.querySelector('.g-review');
+          var gap = parseInt(getComputedStyle(track).columnGap || getComputedStyle(track).gap, 10) || 16;
+          return c ? c.offsetWidth + gap : 320;
+        };
+        var updateNav = function () {
+          prevBtn.disabled = track.scrollLeft <= 4;
+          nextBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+        };
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var animateScroll = function (to) {
+          var max = track.scrollWidth - track.clientWidth;
+          to = Math.max(0, Math.min(max, to));
+          if (reduce) { track.scrollLeft = to; updateNav(); return; }
+          var start = track.scrollLeft, change = to - start, t0 = performance.now(), dur = 380;
+          (function frame(now) {
+            var p = Math.min(1, (now - t0) / dur);
+            track.scrollLeft = start + change * (0.5 - Math.cos(p * Math.PI) / 2);
+            if (p < 1) requestAnimationFrame(frame); else updateNav();
+          })(t0);
+        };
+        prevBtn.addEventListener('click', function () { animateScroll(track.scrollLeft - stepSize()); });
+        nextBtn.addEventListener('click', function () { animateScroll(track.scrollLeft + stepSize()); });
+        track.addEventListener('scroll', updateNav, { passive: true });
+        window.addEventListener('resize', updateNav);
+        updateNav();
+      }
     } else {
       // État honnête : aucun avis fabriqué
       reviewsWrap.innerHTML =
