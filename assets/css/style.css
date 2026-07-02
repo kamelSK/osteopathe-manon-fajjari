@@ -566,3 +566,47 @@ strong { color: var(--sage-800); font-weight: 600; }
   .wa-panel { right: 16px; bottom: 82px; }
 }
 @media (prefers-reduced-motion: reduce){ .wa-fab .wa-ping { animation: none; } }
+
+/* =========================================================================
+   Avis Google (page d'accueil) — note agrégée + cartes d'avis
+   ========================================================================= */
+.g-aggregate {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 1rem 2rem; text-align: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 1.6rem 2rem; max-width: 760px; margin: 0 auto clamp(2rem,4vw,3rem);
+  box-shadow: var(--shadow-sm);
+}
+.g-aggregate .g-logo { width: 40px; height: 40px; flex-shrink: 0; }
+.g-aggregate .score { display: flex; align-items: center; gap: .9rem; }
+.g-aggregate .score .num { font-family: var(--font-serif); font-size: 2.4rem; color: var(--sage-900); line-height: 1; }
+.g-aggregate .stars { display: inline-flex; gap: 2px; color: #fbbc05; }
+.g-aggregate .stars svg { width: 20px; height: 20px; }
+.g-aggregate .meta { color: var(--muted); font-size: .9rem; }
+.g-aggregate .meta b { color: var(--sage-900); font-family: var(--font-serif); }
+.g-aggregate .g-actions { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; }
+
+.g-review { position: relative; padding-top: clamp(1.8rem,3vw,2.2rem); }
+.g-review .g-mark {
+  position: absolute; top: clamp(1.4rem,2.5vw,1.8rem); right: clamp(1.4rem,2.5vw,1.8rem);
+  width: 26px; height: 26px;
+}
+.g-review .stars { color: #fbbc05; }
+.g-review .author { display: flex; align-items: center; gap: .8rem; margin-top: 1.3rem; }
+.g-review .avatar {
+  width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+  display: grid; place-items: center; color: #fff; font-weight: 600; font-family: var(--font-serif);
+  background: linear-gradient(140deg, var(--sage-500), var(--sage-700));
+}
+.g-review .who b { display: block; color: var(--sage-900); font-size: .96rem; font-weight: 600; }
+.g-review .who span { display: inline-flex; align-items: center; gap: .35rem; color: var(--muted); font-size: .8rem; }
+.g-review .who span svg { width: 13px; height: 13px; }
+.g-review blockquote { font-style: normal; font-family: var(--font-sans); font-size: 1rem; color: var(--sage-800); line-height: 1.65; }
+
+.g-empty { grid-column: 1 / -1; text-align: center; max-width: 620px; margin: 0 auto; }
+.g-empty .g-logo { display: block; width: 46px; height: 46px; margin: 0 auto 1rem; }
+.g-empty p { color: var(--muted); margin-bottom: 1.5rem; font-size: 1.02rem; }
+
+/* Contrainte de taille des logos Google (le SVG remplit son conteneur) */
+.g-logo, .g-mark { display: inline-block; line-height: 0; }
+.g-logo svg, .g-mark svg { width: 100%; height: 100%; display: block; }

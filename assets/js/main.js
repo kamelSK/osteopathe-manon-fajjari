@@ -14,6 +14,13 @@
     googleRating: null,
     googleCount: null,
 
+    // Vrais avis Google à afficher sur la page d'accueil.
+    // ⚠️ NE RIEN INVENTER : copier ici les avis réels depuis la fiche Google.
+    // Format : { name:'Prénom N.', date:'il y a 2 semaines', rating:5, text:'Le texte de l\'avis…' }
+    googleReviews: [
+      // { name:'', date:'', rating:5, text:'' },
+    ],
+
     // WhatsApp — numéro au format international SANS le "+" ni espaces.
     // ⚠️ REMPLACER par le vrai numéro (ex. 33612345678 pour 06 12 34 56 78).
     whatsappNumber: '33600000000',
@@ -65,6 +72,67 @@
         '<a class="btn btn--ghost" href="' + CONFIG.googleUrl + '" target="_blank" rel="noopener">Voir &amp; laisser un avis</a>' +
       '</div></div>';
     footer.parentNode.insertBefore(fbar, footer);
+  }
+
+  /* =========================================================================
+     Rendu : avis Google (page d'accueil uniquement)
+     ========================================================================= */
+  function starsFor(n) {
+    var r = Math.round(n || 0), out = '';
+    for (var i = 0; i < 5; i++) out += (i < r) ? svgStar : svgStar.replace('fill="currentColor"', 'fill="#dcdcdc"');
+    return out;
+  }
+  var reviewsWrap = document.getElementById('google-reviews');
+  var aggWrap = document.getElementById('google-aggregate');
+  if (reviewsWrap) {
+    var reviews = CONFIG.googleReviews || [];
+
+    // Bloc note agrégée
+    if (aggWrap) {
+      if (CONFIG.googleRating) {
+        aggWrap.innerHTML =
+          '<span class="g-logo">' + svgGoogleG + '</span>' +
+          '<div class="score"><span class="num">' + CONFIG.googleRating + '</span>' +
+            '<div><span class="stars" aria-hidden="true">' + starsFor(parseFloat(String(CONFIG.googleRating).replace(',', '.'))) + '</span>' +
+            '<div class="meta">' + (CONFIG.googleCount ? '<b>' + CONFIG.googleCount + '</b> avis Google' : 'Avis Google') + '</div></div>' +
+          '</div>' +
+          '<div class="g-actions"><a class="btn btn--ghost" href="' + CONFIG.googleUrl + '" target="_blank" rel="noopener">Voir les avis</a>' +
+          '<a class="btn btn--accent" href="' + CONFIG.googleUrl + '" target="_blank" rel="noopener">Laisser un avis</a></div>';
+      } else {
+        aggWrap.innerHTML =
+          '<span class="g-logo">' + svgGoogleG + '</span>' +
+          '<div class="score"><div><span class="stars" aria-hidden="true">' + svgStars + '</span>' +
+          '<div class="meta">Retrouvez le cabinet sur Google</div></div></div>' +
+          '<div class="g-actions"><a class="btn btn--ghost" href="' + CONFIG.googleUrl + '" target="_blank" rel="noopener">Voir la fiche</a>' +
+          '<a class="btn btn--accent" href="' + CONFIG.googleUrl + '" target="_blank" rel="noopener">Laisser un avis</a></div>';
+      }
+    }
+
+    // Cartes d'avis
+    if (reviews.length) {
+      reviewsWrap.innerHTML = reviews.map(function (r, i) {
+        var initial = (r.name || '?').trim().charAt(0).toUpperCase();
+        var delay = (i % 3) + 1;
+        return '<figure class="quote g-review reveal" data-delay="' + delay + '">' +
+          '<span class="g-mark">' + svgGoogleG + '</span>' +
+          '<div class="stars" aria-label="' + (r.rating || 5) + ' étoiles sur 5">' + starsFor(r.rating || 5) + '</div>' +
+          '<blockquote>' + (r.text || '') + '</blockquote>' +
+          '<figcaption class="author">' +
+            '<span class="avatar" aria-hidden="true">' + initial + '</span>' +
+            '<span class="who"><b>' + (r.name || '') + '</b>' +
+              '<span>' + (r.date ? r.date + ' · ' : '') + 'Publié sur Google</span></span>' +
+          '</figcaption>' +
+        '</figure>';
+      }).join('');
+    } else {
+      // État honnête : aucun avis fabriqué
+      reviewsWrap.innerHTML =
+        '<div class="quote g-empty reveal">' +
+          '<span class="g-logo">' + svgGoogleG + '</span>' +
+          '<p>Les avis des patients s’afficheront ici prochainement. En attendant, consultez la fiche Google du cabinet ou partagez votre propre expérience.</p>' +
+          '<a class="btn btn--accent" href="' + CONFIG.googleUrl + '" target="_blank" rel="noopener">Voir &amp; laisser un avis sur Google</a>' +
+        '</div>';
+    }
   }
 
   /* =========================================================================
