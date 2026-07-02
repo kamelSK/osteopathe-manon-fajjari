@@ -18,7 +18,12 @@
     // ⚠️ NE RIEN INVENTER : copier ici les avis réels depuis la fiche Google.
     // Format : { name:'Prénom N.', date:'il y a 2 semaines', rating:5, text:'Le texte de l\'avis…' }
     googleReviews: [
-      // { name:'', date:'', rating:5, text:'' },
+      {
+        name: "Michel Petit",
+        date: "il y a 4 mois",
+        rating: 5,
+        text: "1re fois que je vais chez Manon Fajjari, ostéopathe installée à Trie-Château. Une jeune femme gentille, installée depuis peu, mais d'un professionnalisme incroyable : avant tout elle ouvre un dossier et pose des questions. Je suis venu pour un lumbago bien douloureux, mais ayant une spondylarthrite ankylosante (HLA-B27) et les deux genoux HS, elle a pris son temps et a mis en pratique sa compétence par rapport à ma maladie et à mes deux genoux. Tous ses gestes sont d'une précision, et toujours à demander si cela allait. Une jeune femme qui aime son métier, à l'écoute du patient ; à la fin elle m'a donné des conseils et, si besoin, je peux la contacter. Je peux vous dire que je ne me suis jamais aussi bien senti, car elle vous explique tout ce qu'elle fait, donc on n'est pas surpris. Cette ostéopathe, je vous la recommande vraiment. Si besoin je retournerai dans son cabinet, agréable et d'une propreté irréprochable. En plus, s'installer dans un petit village, c'est un vrai challenge. Longue vie à vous, restez aussi simple et souriante."
+      },
     ],
 
     // WhatsApp — numéro au format international SANS le "+" ni espaces.
@@ -110,10 +115,12 @@
 
     // Cartes d'avis
     if (reviews.length) {
+      var single = reviews.length === 1;
       reviewsWrap.innerHTML = reviews.map(function (r, i) {
         var initial = (r.name || '?').trim().charAt(0).toUpperCase();
         var delay = (i % 3) + 1;
-        return '<figure class="quote g-review reveal" data-delay="' + delay + '">' +
+        var style = single ? ' style="grid-column:1/-1;max-width:760px;margin:0 auto;"' : '';
+        return '<figure class="quote g-review reveal"' + style + ' data-delay="' + delay + '">' +
           '<span class="g-mark">' + svgGoogleG + '</span>' +
           '<div class="stars" aria-label="' + (r.rating || 5) + ' étoiles sur 5">' + starsFor(r.rating || 5) + '</div>' +
           '<blockquote>' + (r.text || '') + '</blockquote>' +
