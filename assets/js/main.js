@@ -45,8 +45,8 @@
     ],
 
     // WhatsApp — numéro au format international SANS le "+" ni espaces.
-    // ⚠️ REMPLACER par le vrai numéro (ex. 33612345678 pour 06 12 34 56 78).
-    whatsappNumber: '33600000000',
+    // 06 13 09 88 02 -> 33613098802
+    whatsappNumber: '33613098802',
     // Message pré-rempli dans WhatsApp quand le visiteur démarre la conversation.
     whatsappPrefill: 'Bonjour, je vous contacte depuis votre site internet.'
   };
