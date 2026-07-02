@@ -617,3 +617,4 @@ strong { color: var(--sage-800); font-weight: 600; }
 @media (min-width: 980px){ .g-masonry { columns: 3; } }
 .g-masonry > * { break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: clamp(1.25rem, 3vw, 2.25rem); }
 .g-masonry .quote { height: auto; }
+.g-norating { font-style: italic; color: var(--muted); font-size: .95rem; }

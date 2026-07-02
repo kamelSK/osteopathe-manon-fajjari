@@ -36,6 +36,12 @@
         rating: 5,
         text: "Très gentille et très professionnelle !!!"
       },
+      {
+        name: "Alexis Rade",
+        date: "il y a 4 mois",
+        rating: 5,
+        text: "" // note sans commentaire
+      },
     ],
 
     // WhatsApp — numéro au format international SANS le "+" ni espaces.
@@ -136,7 +142,7 @@
         return '<figure class="quote g-review reveal"' + style + ' data-delay="' + delay + '">' +
           '<span class="g-mark">' + svgGoogleG + '</span>' +
           '<div class="stars" aria-label="' + (r.rating || 5) + ' étoiles sur 5">' + starsFor(r.rating || 5) + '</div>' +
-          '<blockquote>' + (r.text || '') + '</blockquote>' +
+          (r.text ? '<blockquote>' + r.text + '</blockquote>' : '<p class="g-norating">A attribué la note maximale au cabinet.</p>') +
           '<figcaption class="author">' +
             '<span class="avatar" aria-hidden="true">' + initial + '</span>' +
             '<span class="who"><b>' + (r.name || '') + '</b>' +
